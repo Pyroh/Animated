@@ -202,17 +202,17 @@ private struct TransformableBindingModifier<Value, A: VectorArithmetic, ContentV
 }
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-func Animated<V: VectorArithmetic, Content: View>(_ value: V, content: @escaping (V) -> Content) -> some View {
+public func Animated<V: VectorArithmetic, Content: View>(_ value: V, content: @escaping (V) -> Content) -> some View {
     Color.clear.modifier(ValueModifier(value: value, content: content))
 }
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-func Animated<V: Animatable, Content: View>(_ value: V, content: @escaping (V) -> Content) -> some View {
+public func Animated<V: Animatable, Content: View>(_ value: V, content: @escaping (V) -> Content) -> some View {
     Color.clear.modifier(AnimatableValueModifier(value: value, content: content))
 }
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-func Animated<V, A: VectorArithmetic, Content: View>(_ value: V,
+public func Animated<V, A: VectorArithmetic, Content: View>(_ value: V,
                                                      transform: @escaping (V) -> A,
                                                      revert: @escaping (A) -> V,
                                                      content: @escaping (V) -> Content) -> some View {
@@ -223,17 +223,17 @@ func Animated<V, A: VectorArithmetic, Content: View>(_ value: V,
 }
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-func Animated<V: VectorArithmetic, Content: View>(_ binding: Binding<V>, content: @escaping (Binding<V>) -> Content) -> some View {
+public func Animated<V: VectorArithmetic, Content: View>(_ binding: Binding<V>, content: @escaping (Binding<V>) -> Content) -> some View {
     Color.clear.modifier(BindingModifier(binding: binding, content: content))
 }
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-func Animated<V: Animatable, Content: View>(_ binding: Binding<V>, content: @escaping (Binding<V>) -> Content) -> some View {
+public func Animated<V: Animatable, Content: View>(_ binding: Binding<V>, content: @escaping (Binding<V>) -> Content) -> some View {
     Color.clear.modifier(AnimatableBindingModifier(binding: binding, content: content))
 }
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-func Animated<V, A: VectorArithmetic, Content: View>(_ binding: Binding<V>,
+public func Animated<V, A: VectorArithmetic, Content: View>(_ binding: Binding<V>,
                                                      transform: @escaping (V) -> A,
                                                      revert: @escaping (A) -> V,
                                                      content: @escaping (Binding<V>) -> Content) -> some View {

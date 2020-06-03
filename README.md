@@ -138,22 +138,21 @@ Although you can nest `Animated` calls convenient multi-arguments `Animated` als
 
 ```Swift
 struct AnimatedSample3: View {
-    @State private var p1: CGFloat = 1
-    @State private var p2: CGFloat = 0
+    @State private var p1: Double = 1
+    @State private var p2: Double = 0
 
     var body: some View {
         VStack {
             Animated(p1, p2) { p1, p2 in
-                RoundedRectangle(cornerRadius: 8)
-                    .foregroundColor(.pink)
-                    .frame(width: 300 * p1, height: 50)
-                RoundedRectangle(cornerRadius: 8)
-                    .foregroundColor(.orange)
-                    .frame(width: 300 * p2, height: 50)
+                HStack {
+                    PieShape(completion: p1).fill(Color.pink)
+                    PieShape(completion: p2).fill(Color.orange)
+                }
             }
+            .frame(height: 120)
         }
         .onAppear {
-            withAnimation(Animation.spring().repeatForever(autoreverses: true)) {
+            withAnimation(Animation.easeInOut(duration: 1.0).repeatForever(autoreverses: true)) {
                 self.p1 = 0
                 self.p2 = 1
             }

@@ -49,7 +49,7 @@ public func Animated<V: Animatable, Content: View>(_ value: V, @ViewBuilder cont
 
 /// A container that animates any view based on the given animatable data.
 /// - Parameters:
-///   - value: Data that animate.
+///   - binding: Data that animate.
 ///   - content: A view builder that creates the content to animate.
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public func Animated<V: VectorArithmetic, Content: View>(_ binding: Binding<V>, @ViewBuilder content: @escaping (Binding<V>) -> Content) -> some View {
@@ -58,7 +58,7 @@ public func Animated<V: VectorArithmetic, Content: View>(_ binding: Binding<V>, 
 
 /// A container that animates any view based on the given animatable data.
 /// - Parameters:
-///   - value: Data that animate.
+///   - binding: Data that animate.
 ///   - content: A view builder that creates the content to animate.
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public func Animated<V: Animatable, Content: View>(_ binding: Binding<V>, @ViewBuilder content: @escaping (Binding<V>) -> Content) -> some View {

@@ -28,6 +28,12 @@
 
 import SwiftUI
 
+/// A container that animates any view based on the given non-animatable data.
+/// - Parameters:
+///   - value: Data that animate.
+///   - transform: A closure that transforms the non-animatable data to animatable ones.
+///   - revert: A closure that transform the animatable data back to the non-animatable ones.
+///   - content: A view builder that creates the content to animate.
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public func TransformAnimated<V, A: VectorArithmetic, Content: View>(_ value: V,
                                                                      transform: @escaping (V) -> A,
@@ -39,8 +45,48 @@ public func TransformAnimated<V, A: VectorArithmetic, Content: View>(_ value: V,
                                                     vToA: transform))
 }
 
+/// A container that animates any view based on the given non-animatable data.
+/// - Parameters:
+///   - value: Data that animate.
+///   - transform: A closure that transforms the non-animatable data to animatable ones.
+///   - revert: A closure that transform the animatable data back to the non-animatable ones.
+///   - content: A view builder that creates the content to animate.
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+public func TransformAnimated<V, A: Animatable, Content: View>(_ value: V,
+                                                                     transform: @escaping (V) -> A,
+                                                                     revert: @escaping (A, V) -> V,
+                                                                     @ViewBuilder content: @escaping (V) -> Content) -> some View {
+    Color.clear.modifier(TransformableValueModifier(value: value,
+                                                    content: content,
+                                                    aToV: revert,
+                                                    vToA: transform))
+}
+
+/// A container that animates any view based on the given non-animatable data.
+/// - Parameters:
+///   - value: Data that animate.
+///   - transform: A closure that transforms the non-animatable data to animatable ones.
+///   - revert: A closure that transform the animatable data back to the non-animatable ones.
+///   - content: A view builder that creates the content to animate.
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public func TransformAnimated<V, A: VectorArithmetic, Content: View>(_ binding: Binding<V>,
+                                                                     transform: @escaping (V) -> A,
+                                                                     revert: @escaping (A, V) -> V,
+                                                                     @ViewBuilder content: @escaping (Binding<V>) -> Content) -> some View {
+    Color.clear.modifier(TransformableBindingModifier(binding: binding,
+                                                      content: content,
+                                                      aToV: revert,
+                                                      vToA: transform))
+}
+
+/// A container that animates any view based on the given non-animatable data.
+/// - Parameters:
+///   - value: Data that animate.
+///   - transform: A closure that transforms the non-animatable data to animatable ones.
+///   - revert: A closure that transform the animatable data back to the non-animatable ones.
+///   - content: A view builder that creates the content to animate.
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+public func TransformAnimated<V, A: Animatable, Content: View>(_ binding: Binding<V>,
                                                                      transform: @escaping (V) -> A,
                                                                      revert: @escaping (A, V) -> V,
                                                                      @ViewBuilder content: @escaping (Binding<V>) -> Content) -> some View {

@@ -56,7 +56,7 @@ public func TransformAnimated<V, A: Animatable, Content: View>(_ value: V,
                                                                      transform: @escaping (V) -> A,
                                                                      revert: @escaping (A, V) -> V,
                                                                      @ViewBuilder content: @escaping (V) -> Content) -> some View {
-    Color.clear.modifier(TransformableValueModifier(value: value,
+    Color.clear.modifier(TransformableAnimatableValueModifier(value: value,
                                                     content: content,
                                                     aToV: revert,
                                                     vToA: transform))
@@ -90,7 +90,7 @@ public func TransformAnimated<V, A: Animatable, Content: View>(_ binding: Bindin
                                                                      transform: @escaping (V) -> A,
                                                                      revert: @escaping (A, V) -> V,
                                                                      @ViewBuilder content: @escaping (Binding<V>) -> Content) -> some View {
-    Color.clear.modifier(TransformableBindingModifier(binding: binding,
+    Color.clear.modifier(TransformableAnimatableBindingModifier(binding: binding,
                                                       content: content,
                                                       aToV: revert,
                                                       vToA: transform))

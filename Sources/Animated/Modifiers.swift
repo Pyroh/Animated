@@ -100,6 +100,31 @@ struct TransformableValueModifier<Value, A: VectorArithmetic, ContentView: View>
     }
 }
 
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+struct TransformableAnimatableValueModifier<Value, A: Animatable, ContentView: View>: AnimatableModifier {
+    private var value: Value
+    private let content: (Value) -> ContentView
+
+    private let aToV: (A, Value) -> Value
+    private let vToA: (Value) -> A
+
+    var animatableData: A {
+        get { vToA(value) }
+        set { value = aToV(newValue, value) }
+    }
+
+    init(value: Value, content: @escaping (Value) -> ContentView, aToV: @escaping (A, Value) -> Value, vToA: @escaping (Value) -> A) {
+        self.value = value
+        self.content = content
+        self.aToV = aToV
+        self.vToA = vToA
+    }
+
+    func body(content: Content) -> ContentView {
+        return self.content(value)
+    }
+}
+
 // MARK: VectorArithmetic Binding
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
@@ -168,6 +193,40 @@ struct AnimatableBindingModifier<Value: Animatable, ContentView: View>: Animatab
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 struct TransformableBindingModifier<Value, A: VectorArithmetic, ContentView: View>: AnimatableModifier {
+    private var binding: Binding<Value>
+    private var shadowBinding: Binding<Value> {
+        .init(get: {
+            self.value
+        }) { (newValue) in
+            self.binding.wrappedValue = newValue
+        }
+    }
+
+    private let content: (Binding<Value>) -> ContentView
+    private var value: Value
+
+    private let aToV: (A, Value) -> Value
+    private let vToA: (Value) -> A
+
+    var animatableData: A {
+        get { vToA(value) }
+        set { value = aToV(newValue, value) }
+    }
+
+    init(binding: Binding<Value>, content: @escaping (Binding<Value>) -> ContentView, aToV: @escaping (A, Value) -> Value, vToA: @escaping (Value) -> A) {
+        self.binding = binding
+        self.content = content
+        self.value = binding.wrappedValue
+        self.aToV = aToV
+        self.vToA = vToA
+    }
+
+    func body(content: Content) -> ContentView {
+        return self.content(shadowBinding)
+    }
+}
+
+struct TransformableAnimatableBindingModifier<Value, A: Animatable, ContentView: View>: AnimatableModifier {
     private var binding: Binding<Value>
     private var shadowBinding: Binding<Value> {
         .init(get: {
